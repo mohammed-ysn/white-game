@@ -70,7 +70,7 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/ws", handleWebSocket)
-	fs := http.FileServer(http.Dir("static"))
+	fs := http.FileServer(http.Dir("public"))
 	http.Handle("/", fs)
 
 	fmt.Println("Server started at http://localhost:8080")
