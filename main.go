@@ -19,6 +19,8 @@ var upgrader = websocket.Upgrader{
 var clients = make(map[*websocket.Conn]bool)
 var clientsLock sync.Mutex
 
+var senderConn *websocket.Conn
+
 func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -32,7 +34,7 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 	clientsLock.Unlock()
 
 	for {
-		_, _, err := conn.ReadMessage()
+		messageType, msg, err := conn.ReadMessage()
 		if err != nil {
 			clientsLock.Lock()
 			delete(clients, conn)
@@ -40,15 +42,25 @@ func handleWebSocket(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		// Broadcast "HELLO" message to all clients, except one random connection
+		if conn == senderConn {
+			senderConn = nil
+		}
+
+		// Broadcast the received message to all except the sender
+		// and WHITE to a random client
 		clientsLock.Lock()
 		index := rand.Intn(len(clients))
 		i := 0
 		for client := range clients {
 			if i == index {
-				_ = client.WriteMessage(websocket.TextMessage, []byte("WHITE"))
+				if conn != client {
+					senderConn = client
+					_ = client.WriteMessage(messageType, []byte("WHITE"))
+				} else {
+					_ = client.WriteMessage(messageType, msg)
+				}
 			} else {
-				_ = client.WriteMessage(websocket.TextMessage, []byte("HELLO"))
+				_ = client.WriteMessage(messageType, msg)
 			}
 			i++
 		}

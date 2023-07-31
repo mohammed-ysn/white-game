@@ -4,8 +4,9 @@
   <title>WebSocket Test</title>
 </head>
 <body>
-  <button onclick="sendMessage()">Send Message</button>
   <div id="message-container"></div>
+  <input type="text" id="message-box" placeholder="Type a message" />
+  <button onclick="sendMessage()">Send</button>
 
   <script>
     const socket = new WebSocket("ws://localhost:8080/ws");
@@ -16,7 +17,10 @@
     };
 
     function sendMessage() {
-      socket.send("Clicked!");
+      const messageBox = document.getElementById("message-box");
+      const message = messageBox.value;
+      socket.send(message);
+      messageBox.value = "";
     }
   </script>
 </body>
