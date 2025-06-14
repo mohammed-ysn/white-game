@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: white-game-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - CORS_ORIGIN=*
+    networks:
+      - white-game-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build: ./frontend
+    container_name: white-game-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - white-game-network
+    environment:
+      - BACKEND_URL=http://backend:3000
+
+networks:
+  white-game-network:
+    driver: bridge

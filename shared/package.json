@@ -1,0 +1,14 @@
+{
+  "name": "@white-game/shared",
+  "version": "1.0.0",
+  "description": "Shared types for White game",
+  "main": "types/index.js",
+  "types": "types/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
