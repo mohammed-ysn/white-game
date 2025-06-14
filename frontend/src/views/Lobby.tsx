@@ -60,7 +60,7 @@ export function Lobby() {
               
               {isHost ? (
                 <div className="pt-4">
-                  {canStartGame() ? (
+                  {canStartGame ? (
                     <Button onClick={handleStartGame} size="lg" fullWidth>
                       Start Game
                     </Button>

@@ -1,6 +1,6 @@
 FROM node:20-alpine
 
-WORKDIR /app
+WORKDIR /app/backend
 
 # Install development tools
 RUN apk add --no-cache curl

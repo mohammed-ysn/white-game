@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { useSocket } from './hooks/useSocket';
 import { useGameStore } from './store/gameStore';
@@ -10,7 +9,7 @@ import { Results } from './views/Results';
 import { GameOver } from './views/GameOver';
 
 function App() {
-  const socket = useSocket();
+  useSocket();
   const room = useGameStore((state) => state.room);
   const isConnected = useGameStore((state) => state.isConnected);
   const error = useGameStore((state) => state.error);

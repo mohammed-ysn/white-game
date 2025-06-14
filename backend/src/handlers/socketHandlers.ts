@@ -1,5 +1,5 @@
 import type { TypedSocket, TypedSocketServer } from '../types/socket';
-import type { Player } from '@white-game/shared';
+import type { Player, Room } from '@white-game/shared';
 import { RoomService } from '../services/RoomService';
 import { GameService } from '../services/GameService';
 import { logger } from '../utils/logger';

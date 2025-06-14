@@ -13,7 +13,6 @@ export function useSocket() {
     setRoundResults,
     setFinalScores,
     setError,
-    setPlayer,
     reset,
   } = useGameStore();
 
@@ -42,7 +41,7 @@ export function useSocket() {
         toast.success(`${player.name} joined the game`);
       });
 
-      socket.on('player-left', (playerId) => {
+      socket.on('player-left', () => {
         toast(`A player left the game`);
       });
 
@@ -53,7 +52,7 @@ export function useSocket() {
         toast.success('Game started!');
       });
 
-      socket.on('turn-update', (playerId, timeLeft) => {
+      socket.on('turn-update', (_, timeLeft) => {
         setTimeLeft(timeLeft);
       });
 
@@ -61,7 +60,7 @@ export function useSocket() {
         setTimeLeft(time);
       });
 
-      socket.on('word-submitted', (submission) => {
+      socket.on('word-submitted', () => {
         // Word submissions are already in room update
       });
 

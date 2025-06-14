@@ -1,8 +1,8 @@
-version: '3.8'
-
 services:
   backend:
-    build: ./backend
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
     container_name: white-game-backend
     ports:
       - "3000:3000"
@@ -19,7 +19,9 @@ services:
       retries: 3
 
   frontend:
-    build: ./frontend
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
     container_name: white-game-frontend
     ports:
       - "80:80"

@@ -1,4 +1,3 @@
-import { useSocket } from '../hooks/useSocket';
 import { useGameStore } from '../store/gameStore';
 import { Button } from '../components/Button';
 import { Card } from '../components/Card';
@@ -7,7 +6,6 @@ import confetti from 'canvas-confetti';
 import { useEffect } from 'react';
 
 export function GameOver() {
-  const socket = useSocket();
   const room = useGameStore((state) => state.room);
   const finalScores = useGameStore((state) => state.finalScores);
   const reset = useGameStore((state) => state.reset);

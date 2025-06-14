@@ -37,7 +37,7 @@ async function start() {
     const room = roomService.getRoom(roomId.toUpperCase());
     
     if (!room) {
-      return fastify.httpErrors.notFound('Room not found');
+      return { error: 'Room not found' };
     }
 
     // Return limited info for security

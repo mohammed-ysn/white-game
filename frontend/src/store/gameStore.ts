@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Room, Player, WordSubmission, RoundResults, PlayerScore } from '@white-game/shared';
+import type { Room, Player, RoundResults, PlayerScore } from '@white-game/shared';
 
 interface GameStore {
   // Connection state

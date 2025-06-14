@@ -1,14 +1,14 @@
-version: '3.8'
-
 services:
   backend:
     build: 
-      context: ./backend
-      dockerfile: Dockerfile.dev
+      context: .
+      dockerfile: ./backend/Dockerfile.dev
     container_name: white-game-backend-dev
     volumes:
-      - ./backend:/app
-      - /app/node_modules
+      - ./backend:/app/backend
+      - ./shared:/app/shared
+      - /app/backend/node_modules
+      - /app/shared/node_modules
     ports:
       - "3000:3000"
     environment:
@@ -17,16 +17,18 @@ services:
       - CORS_ORIGIN=*
     networks:
       - white-game-network
-    command: npm run dev
+    command: sh -c "cd /app/shared && npm install && cd /app/backend && npm install && npm run dev"
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
+      context: .
+      dockerfile: ./frontend/Dockerfile.dev
     container_name: white-game-frontend-dev
     volumes:
-      - ./frontend:/app
-      - /app/node_modules
+      - ./frontend:/app/frontend
+      - ./shared:/app/shared
+      - /app/frontend/node_modules
+      - /app/shared/node_modules
     ports:
       - "5173:5173"
     depends_on:
@@ -36,7 +38,7 @@ services:
     environment:
       - VITE_API_URL=http://localhost:3000
       - VITE_WS_URL=ws://localhost:3000
-    command: npm run dev
+    command: sh -c "cd /app/shared && npm install && cd /app/frontend && npm install && npm run dev"
 
 networks:
   white-game-network:
