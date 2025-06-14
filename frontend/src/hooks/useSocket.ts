@@ -1,10 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { createSocket, TypedSocket } from '../utils/socket';
 import { useGameStore } from '../store/gameStore';
 import toast from 'react-hot-toast';
 
+// Global socket instance to persist across component changes
+let globalSocket: TypedSocket | null = null;
+
 export function useSocket() {
-  const socketRef = useRef<TypedSocket | null>(null);
   const {
     setConnected,
     setRoom,
@@ -13,13 +15,12 @@ export function useSocket() {
     setRoundResults,
     setFinalScores,
     setError,
-    reset,
   } = useGameStore();
 
   useEffect(() => {
-    if (!socketRef.current) {
-      socketRef.current = createSocket();
-      const socket = socketRef.current;
+    if (!globalSocket) {
+      globalSocket = createSocket();
+      const socket = globalSocket;
 
       // Connection events
       socket.on('connect', () => {
@@ -82,15 +83,7 @@ export function useSocket() {
         toast.error(message);
       });
     }
+  }, [setConnected, setRoom, setCurrentWord, setTimeLeft, setRoundResults, setFinalScores, setError]);
 
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect();
-        socketRef.current = null;
-        reset();
-      }
-    };
-  }, []);
-
-  return socketRef.current;
+  return globalSocket;
 }

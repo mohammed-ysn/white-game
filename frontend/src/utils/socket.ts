@@ -4,20 +4,9 @@ import type { ServerToClientEvents, ClientToServerEvents } from '@white-game/sha
 export type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
 
 export function createSocket(): TypedSocket {
-  // Dynamically determine the socket URL based on current location
-  const getSocketUrl = () => {
-    const { hostname, protocol } = window.location;
-    
-    // If running through ngrok or any external domain
-    if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-      return `${protocol}//${hostname}`;
-    }
-    
-    // Local development
-    return import.meta.env.VITE_WS_URL || 'ws://localhost:3000';
-  };
-
-  const socket: TypedSocket = io(getSocketUrl(), {
+  // Always use the current origin for socket connections
+  // This ensures it works with both localhost and ngrok
+  const socket: TypedSocket = io({
     transports: ['websocket', 'polling'],
     reconnection: true,
     reconnectionDelay: 1000,
